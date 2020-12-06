@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/Hotfix/Combat/Network/Abstractions/INetworkAssets.cs.meta
+guid: 085be9eb54b7c204086b7793892ae265
+=======
+guid: 25ce284229de8ba4588f656d95a8c1d6
+>>>>>>> master:Assets/Editor/Map/MapEditorHelper.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
