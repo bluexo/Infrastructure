@@ -1,0 +1,12 @@
+{
+  "name": "com.yongegames.infrasturcture",
+  "displayName": "Infrasturcture",
+  "version": "1.0.0",
+  "unity": "2020.1",
+  "description": "Game Infrastructure.",
+  "author": {
+    "name": "Alvin"
+  },
+  "type": "library",
+  "hideInEditor": false
+}
