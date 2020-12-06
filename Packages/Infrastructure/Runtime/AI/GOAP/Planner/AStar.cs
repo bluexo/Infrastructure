@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using ReGoap.Core;
-using ReGoap.Utilities;
 
-namespace ReGoap.Planner
+namespace Origine.Planner
 {
     public class AStar<T>
     {
@@ -52,7 +50,7 @@ namespace ReGoap.Planner
                 var node = frontier.Dequeue();
                 if (node.IsGoal(goal))
                 {
-                    ReGoapLogger.Log("[Astar] Success iterations: " + iterations);
+                    GoapLogger.Log("[Astar] Success iterations: " + iterations);
                     return node;
                 }
                 explored[node.GetState()] = node;
@@ -67,7 +65,7 @@ namespace ReGoap.Planner
                     }
                     if (earlyExit && child.IsGoal(goal))
                     {
-                        ReGoapLogger.Log("[Astar] (early exit) Success iterations: " + iterations);
+                        GoapLogger.Log("[Astar] (early exit) Success iterations: " + iterations);
                         return child;
                     }
                     var childCost = child.GetCost();
@@ -84,13 +82,12 @@ namespace ReGoap.Planner
                             break;
                     }
 
-
                     //Utilities.ReGoapLogger.Log(string.Format("    Enqueue frontier: {0}, cost: {1}", child.Name, childCost));
                     frontier.Enqueue(child, childCost);
                     stateToNode[state] = child;
                 }
             }
-            ReGoapLogger.LogWarning("[Astar] failed.");
+            GoapLogger.LogWarning("[Astar] failed.");
             return null;
         }
     }

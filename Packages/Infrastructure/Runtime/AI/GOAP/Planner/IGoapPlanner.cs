@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using ReGoap.Core;
+using Origine.Core;
 
-namespace ReGoap.Planner
+namespace Origine.Planner
 {
     public interface IGoapPlanner<T, W>
     {
