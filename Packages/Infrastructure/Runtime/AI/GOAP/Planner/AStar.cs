@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Origine.Planner
+namespace Origine.AI
 {
     public class AStar<T>
     {
@@ -89,38 +89,6 @@ namespace Origine.Planner
             }
             GoapLogger.LogWarning("[Astar] failed.");
             return null;
-        }
-    }
-
-    public interface INode<T>
-    {
-        T GetState();
-        List<INode<T>> Expand();
-        int CompareTo(INode<T> other);
-        float GetCost();
-        float GetHeuristicCost();
-        float GetPathCost();
-        INode<T> GetParent();
-        bool IsGoal(T goal);
-
-        string Name { get; }
-        T Goal { get; }
-        T Effects { get; }
-        T Preconditions { get; }
-
-        int QueueIndex { get; set; }
-        float Priority { get; set; }
-        void Recycle();
-    }
-
-    public class NodeComparer<T> : IComparer<INode<T>>
-    {
-        public int Compare(INode<T> x, INode<T> y)
-        {
-            var result = x.CompareTo(y);
-            if (result == 0)
-                return 1;
-            return result;
         }
     }
 }
