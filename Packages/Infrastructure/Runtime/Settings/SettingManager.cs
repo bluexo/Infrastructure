@@ -29,19 +29,18 @@ namespace Origine.Setting
             _gameContext = gameContext;
             _storageManager = gameContext.GetModule<IStorageManager>();
             _collection = _storageManager.GetOrCreate<Dictionary<string, SettingData>>(SETTINGS);
-            _collection.Data = new Dictionary<string, SettingData>();
         }
 
         /// <summary>
         /// 获取游戏配置项数量。
         /// </summary>
-        public int Count => _collection.Data.Count();
+        public int Count => _collection.Value.Count();
 
         /// <summary>
         /// 获取所有游戏配置项的名称。
         /// </summary>
         /// <returns>所有游戏配置项的名称。</returns>
-        public IEnumerable<string> GetAllSettingNames() => _collection.Data.Keys;
+        public IEnumerable<string> GetAllSettingNames() => _collection.Value.Keys;
 
         /// <summary>
         /// 检查是否存在指定游戏配置项。
@@ -55,9 +54,9 @@ namespace Origine.Setting
                 throw new GameException("Setting name is invalid.");
             }
 
-            if (_collection.Data == null) return false;
+            if (_collection.Value == null) return false;
 
-            return _collection.Data.ContainsKey(settingName);
+            return _collection.Value.ContainsKey(settingName);
         }
 
         /// <summary>
@@ -72,8 +71,8 @@ namespace Origine.Setting
                 throw new GameException("Setting name is invalid.");
             }
 
-            if (_collection.Data == null || !_collection.Data.ContainsKey(settingName)) return false;
-            _collection.Data.Remove(settingName);
+            if (_collection.Value == null || !_collection.Value.ContainsKey(settingName)) return false;
+            _collection.Value.Remove(settingName);
             _collection.Save();
             return true;
         }
@@ -90,13 +89,13 @@ namespace Origine.Setting
         {
             if (!HasSetting(name))
             {
-                _collection.Data.Add(name, new SettingData { Name = name, Type = typeof(T), Data = t });
+                _collection.Value.Add(name, new SettingData { Name = name, Type = typeof(T), Data = t });
                 return t;
             }
             else
             {
-                if (!_collection.Data.ContainsKey(name)) return default;
-                return (T)_collection.Data[name].Data;
+                if (!_collection.Value.ContainsKey(name)) return default;
+                return (T)_collection.Value[name].Data;
             }
         }
 
@@ -108,8 +107,8 @@ namespace Origine.Setting
                 t = default;
                 return false;
             }
-            if (_collection.Data.ContainsKey(name)) return false;
-            var doc = _collection.Data[name];
+            if (_collection.Value.ContainsKey(name)) return false;
+            var doc = _collection.Value[name];
             if (doc.Data.GetType() != typeof(T))
             {
                 t = default;
@@ -121,7 +120,7 @@ namespace Origine.Setting
 
         public void Set<T>(string name, T t)
         {
-            _collection.Data[name] = new SettingData { Name = name, Type = typeof(T), Data = t };
+            _collection.Value[name] = new SettingData { Name = name, Type = typeof(T), Data = t };
             _collection.Save();
         }
     }

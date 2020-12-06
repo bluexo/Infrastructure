@@ -86,7 +86,7 @@ namespace Origine.Fsm
                 throw new GameException("FSM states is invalid.");
             }
 
-            Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
+            Fsm<T> fsm = ReferencePool.Take<Fsm<T>>();
             fsm.Name = name;
             fsm.Owner = owner;
             fsm._isDestroyed = false;
@@ -129,7 +129,7 @@ namespace Origine.Fsm
                 throw new GameException("FSM states is invalid.");
             }
 
-            Fsm<T> fsm = ReferencePool.Acquire<Fsm<T>>();
+            Fsm<T> fsm = ReferencePool.Take<Fsm<T>>();
             fsm.Name = name;
             fsm.Owner = owner;
             fsm._isDestroyed = false;
@@ -449,7 +449,7 @@ namespace Origine.Fsm
         /// </summary>
         internal override void Shutdown()
         {
-            ReferencePool.Release(this);
+            ReferencePool.Return(this);
         }
 
         /// <summary>

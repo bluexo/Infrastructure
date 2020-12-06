@@ -68,6 +68,14 @@
                 .ForEach(player => player.ChangeVolume(_baseVolume));
         }
 
+        protected bool FilterPlayer(AudioPlayer player, string audioName)
+        {
+            if (_audioClipDict.ContainsKey(audioName))
+                audioName = _audioClipDict[audioName].name;
+
+            return !string.IsNullOrWhiteSpace(player.CurrentAudioName) && string.Equals(player.CurrentAudioName, audioName, StringComparison.OrdinalIgnoreCase);
+        }
+
         public List<string> GetCurrentAudioNames() => _audioPlayerList
                 .Where(player => player.CurrentState != AudioPlayer.State.Wait)
                 .Select(player => player.CurrentAudioName)
@@ -80,10 +88,7 @@
             float delay,
             float pitch,
             bool isLoop,
-            Action<AudioSource> callback = null)
-        {
-            GetNextAudioPlayer().Play(audioClip, _baseVolume, volumeRate, delay, pitch, isLoop, callback);
-        }
+            Action<AudioSource> callback = null) => GetNextAudioPlayer().Play(audioClip, _baseVolume, volumeRate, delay, pitch, isLoop, callback);
 
         protected IEnumerator RunPlayer(string audioName,
             float volumeRate,
@@ -125,12 +130,8 @@
 
             _audioPlayerList.ForEach(player =>
             {
-                if (_audioClipDict.ContainsKey(audioName))
-                    audioName = _audioClipDict[audioName].name;
-
-                if (!string.IsNullOrWhiteSpace(player.CurrentAudioName)
-                    && string.Equals(player.CurrentAudioName, audioName))
-                    player.Stop();
+                if (!FilterPlayer(player, audioName)) return;
+                player.Stop();
             });
         }
 
@@ -139,8 +140,8 @@
         public void Fade(string audioName, float duration, float from, float to, Action callback)
           => _audioPlayerList.ForEach(player =>
            {
-               if (string.Equals(player.CurrentAudioName, audioName, StringComparison.OrdinalIgnoreCase))
-                   player.Fade(duration, from, to, callback);
+               if (!FilterPlayer(player, audioName)) return;
+               player.Fade(duration, from, to, callback);
            });
 
         public void FadeOut(string audioName, float duration = 1f, Action callback = null) => Fade(audioName, duration, 1, 0, callback);
@@ -156,8 +157,8 @@
         public void Pause(string audioName)
             => _audioPlayerList.ForEach(player =>
             {
-                if (string.Equals(player.CurrentAudioName, audioName, StringComparison.OrdinalIgnoreCase))
-                    player.Pause();
+                if (!FilterPlayer(player, audioName)) return;
+                player.Pause();
             });
 
         public void Switch()
@@ -171,8 +172,8 @@
         public void Resume(string audioName)
            => _audioPlayerList.ForEach(player =>
            {
-               if (string.Equals(player.CurrentAudioName, audioName, StringComparison.OrdinalIgnoreCase))
-                   player.Resume();
+               if (!FilterPlayer(player, audioName)) return;
+               player.Resume();
            });
 
         public void Resume() => _audioPlayerList.ForEach(player => player.Resume());

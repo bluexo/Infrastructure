@@ -62,7 +62,7 @@ namespace Origine
                     HandleEvent(eventNode.Sender, eventNode.EventArgs);
                 }
 
-                ReferencePool.Release(eventNode);
+                ReferencePool.Return(eventNode);
             }
         }
 
@@ -246,7 +246,7 @@ namespace Origine
                 noHandlerException = true;
             }
 
-            ReferencePool.Release(e);
+            ReferencePool.Return(e);
 
             if (noHandlerException)
             {

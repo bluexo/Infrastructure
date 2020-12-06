@@ -25,7 +25,7 @@ namespace Origine
 
             public static Event Create(object sender, T e)
             {
-                Event eventNode = ReferencePool.Acquire<Event>();
+                Event eventNode = ReferencePool.Take<Event>();
                 eventNode.Sender = sender;
                 eventNode.EventArgs = e;
                 return eventNode;

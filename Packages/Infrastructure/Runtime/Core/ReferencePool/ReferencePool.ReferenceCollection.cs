@@ -1,11 +1,4 @@
-﻿//------------------------------------------------------------
-//
-
-//
-//
-//------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Origine
@@ -41,7 +34,7 @@ namespace Origine
 
             public int RemoveReferenceCount { get; private set; }
 
-            public T Acquire<T>() where T : class, IReference, new()
+            public T Take<T>() where T : class, IReference, new()
             {
                 if (typeof(T) != ReferenceType)
                 {
@@ -62,7 +55,7 @@ namespace Origine
                 return new T();
             }
 
-            public IReference Acquire()
+            public IReference Take()
             {
                 UsingReferenceCount++;
                 AcquireReferenceCount++;
@@ -78,7 +71,7 @@ namespace Origine
                 return (IReference)Activator.CreateInstance(ReferenceType);
             }
 
-            public void Release(IReference reference)
+            public void Return(IReference reference)
             {
                 reference.OnDestroy();
                 lock (m_References)

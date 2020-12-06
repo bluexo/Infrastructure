@@ -1,11 +1,4 @@
-﻿//------------------------------------------------------------
-//
-
-//
-//
-//------------------------------------------------------------
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Origine
@@ -69,9 +62,9 @@ namespace Origine
         /// </summary>
         /// <typeparam name="T">引用类型。</typeparam>
         /// <returns>引用。</returns>
-        public static T Acquire<T>() where T : class, IReference, new()
+        public static T Take<T>() where T : class, IReference, new()
         {
-            return GetReferenceCollection(typeof(T)).Acquire<T>();
+            return GetReferenceCollection(typeof(T)).Take<T>();
         }
 
         /// <summary>
@@ -79,24 +72,24 @@ namespace Origine
         /// </summary>
         /// <param name="referenceType">引用类型。</param>
         /// <returns>引用。</returns>
-        public static IReference Acquire(Type referenceType)
+        public static IReference Take(Type referenceType)
         {
             InternalCheckReferenceType(referenceType);
-            return GetReferenceCollection(referenceType).Acquire();
+            return GetReferenceCollection(referenceType).Take();
         }
 
         /// <summary>
         /// 将引用归还引用池。
         /// </summary>
         /// <param name="reference">引用。</param>
-        public static void Release(IReference reference)
+        public static void Return(IReference reference)
         {
             if (reference == null)
                 throw new GameException("Reference is invalid.");
 
             Type referenceType = reference.GetType();
             InternalCheckReferenceType(referenceType);
-            GetReferenceCollection(referenceType).Release(reference);
+            GetReferenceCollection(referenceType).Return(reference);
         }
 
         /// <summary>

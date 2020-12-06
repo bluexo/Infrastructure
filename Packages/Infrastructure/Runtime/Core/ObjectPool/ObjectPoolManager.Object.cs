@@ -84,7 +84,7 @@ namespace Origine.ObjectPool
                     throw new GameException("Object is invalid.");
                 }
 
-                Object<T> internalObject = ReferencePool.Acquire<Object<T>>();
+                Object<T> internalObject = ReferencePool.Take<Object<T>>();
                 internalObject.m_Object = obj;
                 internalObject.SpawnCount = spawned ? 1 : 0;
                 if (spawned)
@@ -146,7 +146,7 @@ namespace Origine.ObjectPool
             public void Release(bool isShutdown)
             {
                 m_Object.Release(isShutdown);
-                ReferencePool.Release(m_Object);
+                ReferencePool.Return(m_Object);
             }
         }
     }

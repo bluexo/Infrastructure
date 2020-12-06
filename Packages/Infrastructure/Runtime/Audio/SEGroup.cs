@@ -47,11 +47,11 @@
             if (!_shouldAdjustVolumeRate)
                 return volumeRate;
 
-            var targetAudioPlayers = _audioPlayerList.FindAll(player => player.CurrentAudioName == audioName);
+            var targetAudioPlayers = _audioPlayerList.FindAll(player => FilterPlayer(player, audioName));
             if (targetAudioPlayers.Count == 0)
                 return volumeRate;
 
-            foreach (var targetAudioPlayer in _audioPlayerList.FindAll(player => player.CurrentAudioName == audioName))
+            foreach (var targetAudioPlayer in targetAudioPlayers)
             {
                 if (targetAudioPlayer.CurrentVolume <= 0)
                     continue;

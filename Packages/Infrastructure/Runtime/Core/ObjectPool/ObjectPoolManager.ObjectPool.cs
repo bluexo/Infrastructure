@@ -452,7 +452,7 @@ namespace Origine.ObjectPool
                 foreach (KeyValuePair<object, Object<T>> objectInMap in m_ObjectMap)
                 {
                     objectInMap.Value.Release(true);
-                    ReferencePool.Release(objectInMap.Value);
+                    ReferencePool.Return(objectInMap.Value);
                 }
 
                 m_Objects.Clear();
@@ -494,7 +494,7 @@ namespace Origine.ObjectPool
                 m_ObjectMap.Remove(obj.Target);
 
                 internalObject.Release(false);
-                ReferencePool.Release(internalObject);
+                ReferencePool.Return(internalObject);
             }
 
             private void GetCanReleaseObjects(List<T> results)

@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using ReGoap.Core;
 
-namespace Origine.AI
+namespace ReGoap.Planner
 {
     public interface IGoapPlanner<T, W>
     {
-        IGoapGoal<T, W> Plan(IGoapAgent<T, W> goapAgent, IGoapGoal<T, W> blacklistGoal, Queue<GoapActionState<T, W>> currentPlan, Action<IGoapGoal<T, W>> callback);
-        IGoapGoal<T, W> GetCurrentGoal();
-        IGoapAgent<T, W> GetCurrentAgent();
+        IReGoapGoal<T, W> Plan(IReGoapAgent<T, W> goapAgent, IReGoapGoal<T, W> blacklistGoal, Queue<ReGoapActionState<T, W>> currentPlan, Action<IReGoapGoal<T, W>> callback);
+        IReGoapGoal<T, W> GetCurrentGoal();
+        IReGoapAgent<T, W> GetCurrentAgent();
         bool IsPlanning();
-        GoapPlannerSettings GetSettings();
+        ReGoapPlannerSettings GetSettings();
     }
 }

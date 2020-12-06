@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+
+using Newtonsoft.Json;
 
 using UnityEngine;
 
@@ -7,7 +9,7 @@ namespace Origine
     public interface IStorageItem<T>
     {
         bool IsNullOrEmpty { get; }
-        T Data { get; set; }
+        T Value { get; set; }
 
         string ToJson();
         void FromJson(string json);
@@ -33,7 +35,7 @@ namespace Origine
         }
 
         private T data;
-        public T Data
+        public T Value
         {
             get => data;
             set
@@ -43,23 +45,25 @@ namespace Origine
             }
         }
 
+        public string ToJson() => JsonConvert.SerializeObject(Value, SerializerSettings);
+
+        public void FromJson(string json) => Value = JsonConvert.DeserializeObject<T>(json, SerializerSettings);
+
         public void Save()
         {
             var orignal = PlayerPrefs.GetString(Key, string.Empty);
-            var json = JsonConvert.SerializeObject(Data, SerializerSettings);
-            if (orignal.Equals(json)) return;
+            var json = JsonConvert.SerializeObject(Value, SerializerSettings);
+            if (orignal.Equals(json, StringComparison.Ordinal))
+                return;
+
             PlayerPrefs.SetString(Key, json);
         }
-
-        public string ToJson() => JsonConvert.SerializeObject(Data, SerializerSettings);
-
-        public void FromJson(string json) => Data = JsonConvert.DeserializeObject<T>(json, SerializerSettings);
 
         public void Clear()
         {
             PlayerPrefs.DeleteKey(Key);
             PlayerPrefs.Save();
-            Data = default;
+            Value = default;
         }
     }
 
@@ -70,7 +74,6 @@ namespace Origine
     {
         public StorageManager()
         {
-
         }
 
         public bool Exists(string name) => PlayerPrefs.HasKey(name);

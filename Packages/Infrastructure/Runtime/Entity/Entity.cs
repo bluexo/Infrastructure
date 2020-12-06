@@ -19,7 +19,7 @@ namespace Origine
                 return default;
             }
 
-            var tmpComponent = ReferencePool.Acquire<T>();
+            var tmpComponent = ReferencePool.Take<T>();
             _componentList.Add(tmpComponent);
             _componentDict.Add(tmpComponent.GetType(), tmpComponent);
 
@@ -87,13 +87,16 @@ namespace Origine
             tmpComponent.Enabled = false;
             _componentDict.Remove(typeof(T));
             _componentList.Remove(tmpComponent);
-            ReferencePool.Release(tmpComponent);
+            ReferencePool.Return(tmpComponent);
         }
 
         public virtual void Destroy()
         {
             foreach (var comp in _componentList)
-                ReferencePool.Release(comp);
+            {
+                comp.Enabled = false;
+                ReferencePool.Return(comp);
+            }
 
             foreach (var co in _coroutines.ToArray())
             {

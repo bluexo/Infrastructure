@@ -33,7 +33,7 @@ namespace Origine
         {
             if (type == null)
             {
-                throw new GameException("Type is invalid.");
+                throw new NullReferenceException("Type is invalid.");
             }
 
             Type = type;
@@ -58,7 +58,7 @@ namespace Origine
         {
             if (Type == null)
             {
-                throw new GameException("Type is invalid.");
+                throw new NullReferenceException("Type is invalid.");
             }
 
             string typeName = Type.FullName;
@@ -79,20 +79,14 @@ namespace Origine
         /// </summary>
         /// <param name="obj">要比较的对象。</param>
         /// <returns>被比较的对象是否与自身相等。</returns>
-        public override bool Equals(object obj)
-        {
-            return obj is TypeNamePair && Equals((TypeNamePair)obj);
-        }
+        public override bool Equals(object obj) => obj is TypeNamePair && Equals(this);
 
         /// <summary>
         /// 比较对象是否与自身相等。
         /// </summary>
         /// <param name="value">要比较的对象。</param>
         /// <returns>被比较的对象是否与自身相等。</returns>
-        public bool Equals(TypeNamePair value)
-        {
-            return Type == value.Type && Name == value.Name;
-        }
+        public bool Equals(TypeNamePair value) => Type == value.Type && Name == value.Name;
 
         /// <summary>
         /// 判断两个对象是否相等。
@@ -100,10 +94,7 @@ namespace Origine
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否相等。</returns>
-        public static bool operator ==(TypeNamePair a, TypeNamePair b)
-        {
-            return a.Equals(b);
-        }
+        public static bool operator ==(TypeNamePair a, TypeNamePair b) => a.Equals(b);
 
         /// <summary>
         /// 判断两个对象是否不相等。
@@ -111,9 +102,6 @@ namespace Origine
         /// <param name="a">值 a。</param>
         /// <param name="b">值 b。</param>
         /// <returns>两个对象是否不相等。</returns>
-        public static bool operator !=(TypeNamePair a, TypeNamePair b)
-        {
-            return !(a == b);
-        }
+        public static bool operator !=(TypeNamePair a, TypeNamePair b) => !(a == b);
     }
 }
