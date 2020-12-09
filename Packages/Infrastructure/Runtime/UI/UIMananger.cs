@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -112,6 +113,7 @@ namespace Origine
             {
                 window = (BaseUI)Activator.CreateInstance(type);
                 uiWindows.Add(window);
+                _eventManager.RegisterCommandHandler(window);
             }
 
             if (!prefabs.ContainsKey(type))
