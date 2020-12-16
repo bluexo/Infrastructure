@@ -18,15 +18,15 @@ namespace Origine
             _eventManager = gameContext.GetModule<IEventManager>();
         }
 
-        public override void Update(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
             for (int i = 0; i < _controllers.Count; i++)
             {
-                _controllers[i].Update(deltaTime);
+                _controllers[i].OnUpdate(deltaTime);
             }
         }
 
-        public override void Dispose()
+        public override void OnDispose()
         {
             for (int i = 0; i < _controllers.Count; i++)
             {

@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
@@ -62,22 +61,22 @@ namespace Origine
             prefabs.Add(windowType, windowHandle);
         }
 
-        public override void Update(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
             for (int i = 0; i < uiWindows.Count; i++)
             {
                 var window = uiWindows[i];
                 if (window.IsVisible && !window.IsDestroyed)
                 {
-                    window.Update(deltaTime);
+                    window.OnUpdate(deltaTime);
                 }
             }
         }
 
-        public override void Dispose()
+        public override void OnDispose()
         {
             for (int i = 0; i < uiWindows.Count; i++)
-                uiWindows[i].Destroy();
+                uiWindows[i].OnDestroy();
 
             uiWindows.Clear();
         }
@@ -113,7 +112,6 @@ namespace Origine
             {
                 window = (BaseUI)Activator.CreateInstance(type);
                 uiWindows.Add(window);
-                _eventManager.RegisterCommandHandler(window);
             }
 
             if (!prefabs.ContainsKey(type))
@@ -276,7 +274,7 @@ namespace Origine
             T tmpWindow = Find<T>();
 
             if (null != tmpWindow)
-                tmpWindow.Destroy();
+                tmpWindow.OnDestroy();
         }
     }
 }

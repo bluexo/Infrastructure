@@ -63,9 +63,9 @@ namespace Origine
             return Execute(src);
         }
 
-        public override void Dispose()
+        public override void OnDispose()
         {
-            base.Dispose();
+            base.OnDispose();
         }
     }
 }

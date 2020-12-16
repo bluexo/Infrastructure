@@ -37,7 +37,7 @@ namespace Origine
         {
             for (var i = 0; i < modules.Count; i++)
             {
-                modules[i].Update(deltaTime);
+                modules[i].OnUpdate(deltaTime);
             }
         }
 
@@ -48,7 +48,7 @@ namespace Origine
         {
             for (var i = modules.Count - 1; i >= 0; i--)
             {
-                modules[i].Dispose();
+                modules[i].OnDispose();
             }
 
             modules.Clear();

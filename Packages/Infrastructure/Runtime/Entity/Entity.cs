@@ -90,7 +90,7 @@ namespace Origine
             ReferencePool.Return(tmpComponent);
         }
 
-        public virtual void Destroy()
+        public virtual void OnDestroy()
         {
             foreach (var comp in _componentList)
             {
@@ -109,7 +109,7 @@ namespace Origine
             disposed = true;
         }
 
-        public virtual void Update(float deltaTime)
+        public virtual void OnUpdate(float deltaTime)
         {
             for (int i = 0; i < _componentList.Count; i++)
             {

@@ -56,9 +56,9 @@ namespace Origine
             }
         }
 
-        public override void Destroy()
+        public override void OnDestroy()
         {
-            base.Destroy();
+            base.OnDestroy();
             compositeDisposables.Dispose();
             GameObject.Destroy(Self);
         }

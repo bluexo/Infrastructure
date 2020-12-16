@@ -28,7 +28,7 @@ namespace Origine.Resource
             Addressables.Release(key);
         }
 
-        public override void Dispose()
+        public override void OnDispose()
         {
             foreach (var asset in LoadedAssets) Addressables.Release(asset.Value);
         }

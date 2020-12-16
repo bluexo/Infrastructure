@@ -11,27 +11,27 @@ namespace Origine
         /// 状态初始化时调用，统一订阅状态转换事件
         /// </summary>
         /// <param name="owner">流程持有者。</param>
-        public override void Init(IFsm<IStageManager> owner)
+        public override void OnInit(IFsm<IStageManager> owner)
         {
-            base.Init(owner);
+            base.OnInit(owner);
         }
 
         /// <summary>
         /// 进入状态时调用。
         /// </summary>
         /// <param name="procedureOwner">流程持有者。</param>
-        public override void Enter()
+        public override void OnEnter()
         {
-            base.Enter();
+            base.OnEnter();
         }
 
         /// <summary>
         /// 状态轮询时调用。
         /// </summary>
         /// <param name="procedureOwner">流程持有者。</param>
-        public override void Update(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
-            base.Update(deltaTime);
+            base.OnUpdate(deltaTime);
         }
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace Origine
         /// </summary>
         /// <param name="procedureOwner">流程持有者。</param>
         /// <param name="isShutdown">是否是关闭状态机时触发。</param>
-        public override void Leave(bool isShutdown)
+        public override void OnLeave(bool isShutdown)
         {
-            base.Leave(isShutdown);
+            base.OnLeave(isShutdown);
         }
 
         /// <summary>

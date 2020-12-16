@@ -72,7 +72,7 @@ namespace Origine
         /// <summary>
         /// 关闭并清理流程管理器。
         /// </summary>
-        public override void Dispose()
+        public override void OnDispose()
         {
             if (_fsmManager != null)
             {

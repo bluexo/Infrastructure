@@ -51,15 +51,15 @@ namespace Origine
 
         protected virtual void BeforeDestory() => BeforeDestoryComponent();
 
-        public override void Update(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
-            base.Update(deltaTime);
+            base.OnUpdate(deltaTime);
 
             for (int i = 0; i < _childWindows.Count; i++)
             {
                 var child = _childWindows[i];
                 if (child.IsVisible && !child.IsDestroyed)
-                    child.Update(deltaTime);
+                    child.OnUpdate(deltaTime);
             }
         }
 
@@ -136,10 +136,10 @@ namespace Origine
                 Self.SetActive(false);
         }
 
-        public override void Destroy()
+        public override void OnDestroy()
         {
             BeforeDestory();
-            base.Destroy();
+            base.OnDestroy();
             IsDestroyed = true;
 
             if (Self)

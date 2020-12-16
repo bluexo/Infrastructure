@@ -104,7 +104,7 @@ namespace Origine.Fsm
                 }
 
                 fsm._states.Add(stateType, state);
-                state.Init(fsm);
+                state.OnInit(fsm);
             }
 
             return fsm;
@@ -147,7 +147,7 @@ namespace Origine.Fsm
                 }
 
                 fsm._states.Add(stateType, state);
-                state.Init(fsm);
+                state.OnInit(fsm);
             }
 
             return fsm;
@@ -160,7 +160,7 @@ namespace Origine.Fsm
         {
             if (CurrentState != null)
             {
-                CurrentState.Leave(true);
+                CurrentState.OnLeave(true);
             }
 
             foreach (KeyValuePair<Type, FsmState<T>> state in _states)
@@ -196,7 +196,7 @@ namespace Origine.Fsm
 
             _currentStateTime = 0f;
             CurrentState = state;
-            CurrentState.Enter();
+            CurrentState.OnEnter();
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace Origine.Fsm
 
             _currentStateTime = 0f;
             CurrentState = state;
-            CurrentState.Enter();
+            CurrentState.OnEnter();
         }
 
         /// <summary>
@@ -441,7 +441,7 @@ namespace Origine.Fsm
             }
 
             _currentStateTime += deltaTime;
-            CurrentState.Update(deltaTime);
+            CurrentState.OnUpdate(deltaTime);
         }
 
         /// <summary>
@@ -478,10 +478,10 @@ namespace Origine.Fsm
                 throw new GameException(Utility.Text.Format("FSM '{0}' can not change state to '{1}' which is not exist.", new TypeNamePair(typeof(T), Name).ToString(), stateType.FullName));
             }
 
-            CurrentState.Leave(false);
+            CurrentState.OnLeave(false);
             _currentStateTime = 0f;
             CurrentState = state;
-            CurrentState.Enter();
+            CurrentState.OnEnter();
         }
     }
 }

@@ -6,23 +6,23 @@ using UnityEngine;
 
 public class StartStage : StageBase
 {
-    public override void Init(IFsm<IStageManager> owner)
+    public override void OnInit(IFsm<IStageManager> owner)
     {
-        base.Init(owner);
+        base.OnInit(owner);
     }
 
-    public override void Enter()
+    public override void OnEnter()
     {
-        base.Enter();
+        base.OnEnter();
     }
 
-    public override void Update(float deltaTime)
+    public override void OnUpdate(float deltaTime)
     {
-        base.Update(deltaTime);
+        base.OnUpdate(deltaTime);
     }
 
-    public override void Leave(bool isShutdown)
+    public override void OnLeave(bool isShutdown)
     {
-        base.Leave(isShutdown);
+        base.OnLeave(isShutdown);
     }
 }

@@ -21,7 +21,7 @@ namespace Origine.Fsm
         /// 有限状态机状态初始化时调用。
         /// </summary>
         /// <param name="fsm">有限状态机引用。</param>
-        public virtual void Init(IFsm<T> fsm)
+        public virtual void OnInit(IFsm<T> fsm)
         {
             Fsm = fsm;
         }
@@ -30,7 +30,7 @@ namespace Origine.Fsm
         /// 有限状态机状态进入时调用。
         /// </summary>
         /// <param name="fsm">有限状态机引用。</param>
-        public virtual void Enter()
+        public virtual void OnEnter()
         {
         }
 
@@ -39,7 +39,7 @@ namespace Origine.Fsm
         /// </summary>
         /// <param name="fsm">有限状态机引用。</param>
         /// <param name="isShutdown">是否是关闭有限状态机时触发。</param>
-        public virtual void Leave(bool isShutdown)
+        public virtual void OnLeave(bool isShutdown)
         {
         }
 

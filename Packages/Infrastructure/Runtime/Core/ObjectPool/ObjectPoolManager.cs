@@ -49,7 +49,7 @@ namespace Origine.ObjectPool
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        public override void Update(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
             foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {
@@ -60,7 +60,7 @@ namespace Origine.ObjectPool
         /// <summary>
         /// 关闭并清理对象池管理器。
         /// </summary>
-        public override void Dispose()
+        public override void OnDispose()
         {
             foreach (KeyValuePair<TypeNamePair, ObjectPoolBase> objectPool in _objectPools)
             {

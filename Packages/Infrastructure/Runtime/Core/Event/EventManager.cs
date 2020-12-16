@@ -42,12 +42,12 @@ namespace Origine
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        public override void Update(float deltaTime) => _eventPool.Update(deltaTime);
+        public override void OnUpdate(float deltaTime) => _eventPool.Update(deltaTime);
 
         /// <summary>
         /// 关闭并清理事件管理器。
         /// </summary>
-        public override void Dispose() => _eventPool.Shutdown();
+        public override void OnDispose() => _eventPool.Shutdown();
 
         /// <summary>
         /// 获取事件处理函数的数量。

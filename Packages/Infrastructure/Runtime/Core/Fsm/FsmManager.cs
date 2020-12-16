@@ -34,7 +34,7 @@ namespace Origine.Fsm
         /// <summary>
         /// 有限状态机管理器轮询。
         /// </summary>
-        public override void Update(float deltaTime)
+        public override void OnUpdate(float deltaTime)
         {
             _tempFsms.Clear();
             if (_fsms.Count <= 0)
@@ -61,7 +61,7 @@ namespace Origine.Fsm
         /// <summary>
         /// 关闭并清理有限状态机管理器。
         /// </summary>
-        public override void Dispose()
+        public override void OnDispose()
         {
             foreach (KeyValuePair<TypeNamePair, Fsm> fsm in _fsms)
             {
