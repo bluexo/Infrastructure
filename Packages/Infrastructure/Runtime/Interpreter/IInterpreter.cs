@@ -1,24 +1,19 @@
 ﻿using Jint;
+using System.Reflection;
 
 namespace Origine
 {
-    public struct InterpreterContext
-    {
-        public string Name { get; set; }
-        public object Value { get; set; }
-    }
-
     /// <summary>
     /// 脚本解释器
     /// </summary>
-    public interface IInterpreter
+    public interface IInterpreter : IScope
     {
-        void SetValue(string key, object parameter);
+        IScope Global { get; }
 
-        object Execute(string src);
+        void SetClrAssemblies(params Assembly[] assemblies);
 
-        bool TryExecute<T>(string src, out T value);
+        IScope GetOrCreate(string scopeName, params Assembly[] assemblies);
 
-        object Execute(string src, params InterpreterContext[] contexts);
+        void Release(string scope);
     }
 }

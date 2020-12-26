@@ -11,27 +11,15 @@ namespace Origine
     /// <summary>
     /// JS 脚本解释器
     /// </summary>
-    internal class JavascriptInterpreter : GameModule, IInterpreter
+    internal class ScriptScope : IScope
     {
-        readonly GameContext _gameContext;
-        readonly Engine _engine;
+        public string Name { get; private set; }
+        private readonly Engine _engine;
 
-        public JavascriptInterpreter(GameContext gameContext)
+        public ScriptScope(string name, Engine engine)
         {
-            _gameContext = gameContext;
-
-            _engine = new Engine(options =>
-            {
-                options.AllowClr(typeof(MonoBehaviour).Assembly, typeof(UnityEngine.EventSystems.UIBehaviour).Assembly);
-                options.LimitRecursion(sbyte.MaxValue);
-#if DEBUG
-                options.DebugMode(true);
-#endif
-            });
-
-            _engine.SetValue("TYPE", new Func<string, Type>(Utility.AssemblyCollection.GetType));
-            _engine.SetValue("LOG", new Action<string>(Debug.Log));
-            _engine.SetValue("ERR", new Action<string>(Debug.LogError));
+            Name = name;
+            _engine = engine;
         }
 
         public void SetValue(string key, object parameter) => _engine.SetValue(key, parameter);
@@ -63,9 +51,12 @@ namespace Origine
             return Execute(src);
         }
 
-        public override void OnDispose()
+        public void OnDispose()
         {
-            base.OnDispose();
+            _engine.ResetCallStack();
+            _engine.ResetMemoryUsage();
+            _engine.ResetStatementsCount();
+            _engine.ResetTimeoutTicks();
         }
     }
 }
