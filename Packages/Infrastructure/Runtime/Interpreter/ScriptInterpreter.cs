@@ -25,17 +25,17 @@ namespace Origine
         public ScriptInterpreter(GameContext gameContext)
         {
             _gameContext = gameContext;
-            Global = GetOrCreate(nameof(Global));
+            Global = GetOrCreate(nameof(Global), AppDomain.CurrentDomain.GetAssemblies());
         }
 
-        public IScope GetOrCreate(string scopeName, params Assembly[] assemblies)
+        public IScope GetOrCreate(string scopeName, params Assembly[] asms)
         {
             if (!scopes.ContainsKey(scopeName))
             {
-                var asms = new List<Assembly>(_assemblies.Union(assemblies)).ToArray();
+                var array = new List<Assembly>(_assemblies.Union(asms)).ToArray();
                 var _engine = new Engine(options =>
                 {
-                    options.AllowClr(asms);
+                    options.AllowClr(array);
                     options.LimitRecursion(sbyte.MaxValue);
                 });
                 scopes[scopeName] = new ScriptScope(scopeName, _engine);
@@ -67,7 +67,7 @@ namespace Origine
 
         public void SetClrAssemblies(params Assembly[] assemblies)
         {
-            _assemblies.Union(assemblies);
+            _assemblies.UnionWith(assemblies);
         }
     }
 }
