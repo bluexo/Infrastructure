@@ -24,6 +24,7 @@ namespace Origine
     {
         public GameObject Self { get; protected set; }
         public Transform Transform => Self ? Self.transform : null;
+        public bool Initialized { get; protected set; }
 
         protected virtual void CollectAutoReferences(GameObject root = null)
         {
