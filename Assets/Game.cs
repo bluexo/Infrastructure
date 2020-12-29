@@ -1,4 +1,5 @@
 ﻿using Origine;
+using Origine.BT;
 using Origine.Fsm;
 using Origine.ObjectPool;
 using Origine.Setting;
@@ -27,6 +28,7 @@ namespace Wars
         public static IStorageManager StorageManager { get; private set; }
         public static ISettingManager SettingManager { get; private set; }
         public static IAudioManager AudioManager { get; private set; }
+        public static IBTManager BTManager { get; private set; }
 
         public static bool Initialized { get; private set; }
 

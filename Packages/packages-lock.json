@@ -39,7 +39,9 @@
       "version": "file:Infrastructure",
       "depth": 0,
       "source": "embedded",
-      "dependencies": {}
+      "dependencies": {
+        "com.unity.addressables": "1.8.5"
+      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

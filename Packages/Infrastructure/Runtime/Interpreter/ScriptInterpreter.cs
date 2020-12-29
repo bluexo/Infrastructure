@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-using Jint;
-using Esprima;
+﻿using Jint;
 using System;
-using System.Reflection;
-using UnityEditor;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Origine
 {
