@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 
 namespace Origine
 {
@@ -41,6 +42,18 @@ namespace Origine
         /// </summary>
         /// <typeparam name="T"></typeparam>
         void Switch<T>() where T : StageBase;
+
+        /// <summary>
+        /// 转换状态
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        void Switch<T, T1>(T1 t1) where T : StageBase, IInitializer<T1>;
+
+        /// <summary>
+        /// 转换状态
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        void Switch<T, T1, T2>(T1 t1, T2 t2) where T : StageBase, IInitializer<T1, T2>;
 
         /// <summary>
         /// 转换状态

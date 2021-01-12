@@ -165,5 +165,19 @@ namespace Origine
         public void Switch<T>() where T : StageBase => Current?.ChangeState<T>();
 
         public void Switch(Type type) => Current?.ChangeState(type);
+
+        public void Switch<T, T1>(T1 t1) where T : StageBase, IInitializer<T1>
+        {
+            var stage = Get<T>();
+            if (stage is IInitializer<T1> initializer) initializer.Initialize(t1);
+            Switch<T>();
+        }
+
+        public void Switch<T, T1, T2>(T1 t1, T2 t2) where T : StageBase, IInitializer<T1, T2>
+        {
+            var stage = Get<T>();
+            if (stage is IInitializer<T1, T2> initializer) initializer.Initialize(t1, t2);
+            Switch<T>();
+        }
     }
 }

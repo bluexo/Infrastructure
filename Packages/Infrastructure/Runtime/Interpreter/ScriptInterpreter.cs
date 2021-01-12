@@ -1,8 +1,13 @@
-﻿using Jint;
-using System;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using UnityEngine;
+
+using Jint;
+using Esprima;
+using System;
 using System.Reflection;
+using UnityEditor;
+using System.Linq;
 
 namespace Origine
 {
@@ -20,20 +25,19 @@ namespace Origine
         public ScriptInterpreter(GameContext gameContext)
         {
             _gameContext = gameContext;
-            Global = GetOrCreate(nameof(Global), AppDomain.CurrentDomain.GetAssemblies());
+            Global = GetOrCreate(nameof(Global), Utility.AssemblyCollection.GetAssemblies());
         }
 
-        public IScope GetOrCreate(string scopeName, params Assembly[] asms)
+        public IScope GetOrCreate(string scopeName, params Assembly[] assemblies)
         {
             if (!scopes.ContainsKey(scopeName))
             {
-                var array = new List<Assembly>(_assemblies.Union(asms)).ToArray();
-                var _engine = new Engine(options =>
+                var engine = new Engine(options =>
                 {
-                    options.AllowClr(array);
+                    options.AllowClr(Utility.AssemblyCollection.GetAssemblies());
                     options.LimitRecursion(sbyte.MaxValue);
                 });
-                scopes[scopeName] = new ScriptScope(scopeName, _engine);
+                scopes[scopeName] = new ScriptScope(scopeName, engine);
             }
             return scopes[scopeName];
         }

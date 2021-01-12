@@ -74,6 +74,7 @@ namespace Origine
     {
         public StorageManager()
         {
+
         }
 
         public bool Exists(string name) => PlayerPrefs.HasKey(name);
