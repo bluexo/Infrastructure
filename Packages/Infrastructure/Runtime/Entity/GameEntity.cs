@@ -14,6 +14,7 @@ namespace Origine
     public class AutoRefAttribute : Attribute
     {
         public string Name { get; set; }
+        public string Parent { get; set; }
         public bool IgnoreCase { get; set; } = true;
 
         public AutoRefAttribute() { }
@@ -35,17 +36,15 @@ namespace Origine
 
             foreach (var (field, bind) in binders)
             {
+                GameObject parent = null;
+                if (!string.IsNullOrWhiteSpace(bind.Parent))
+                    parent = Find(root, bind.Parent, bind.IgnoreCase);
+
+                if (!parent) parent = root;
+
                 var bindName = string.IsNullOrWhiteSpace(bind.Name) ? field.Name : bind.Name;
-                var child = root ? Utility.Find(root, bindName) : GameObject.Find(bindName);
-
-                if (bind.IgnoreCase && !child)
-                    child = root ? Utility.FindByTitleCase(root, bindName) : GameObject.Find(bindName.TitleCase());
-
-                if (!child)
-                {
-                    Debug.LogError($"Cannot found child {nameof(GameObject)}={field.Name} from {root.name}");
-                    continue;
-                }
+                var child = Find(parent, bindName, bind.IgnoreCase);
+                if (!child) continue;
 
                 var comp = child.GetComponent(field.FieldType);
                 if (!comp)
@@ -54,6 +53,22 @@ namespace Origine
                     continue;
                 }
                 field.SetValue(this, comp);
+            }
+
+            GameObject Find(GameObject parent, string name, bool ignoreCase)
+            {
+                var child = parent ? Utility.Find(parent, name) : GameObject.Find(name);
+
+                if (ignoreCase && !child)
+                    child = parent ? Utility.FindByTitleCase(parent, name) : GameObject.Find(name.TitleCase());
+
+                if (!child)
+                {
+                    Debug.LogError($"Cannot found child {nameof(GameObject)}={name} from {parent.name}");
+                    return null;
+                }
+
+                return child;
             }
         }
 
