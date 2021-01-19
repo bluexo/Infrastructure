@@ -12,6 +12,8 @@ namespace Origine
 
         TData GetData<TData>(int id);
 
+        bool TryGetData<TData>(int id, out TData data);
+
         TConfig Get<TConfig>() where TConfig : class, IEnumerable;
     }
 }

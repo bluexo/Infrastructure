@@ -16,25 +16,25 @@ namespace Origine
     /// </summary>
     internal class ScriptInterpreter : GameModule, IInterpreter
     {
-        readonly Dictionary<string, IScope> scopes = new Dictionary<string, IScope>();
+        readonly Dictionary<string, IScriptScope> scopes = new Dictionary<string, IScriptScope>();
         readonly HashSet<Assembly> _assemblies = new HashSet<Assembly>();
         readonly GameContext _gameContext;
 
-        public IScope Global { get; private set; }
+        public IScriptScope Global { get; private set; }
 
         public ScriptInterpreter(GameContext gameContext)
         {
             _gameContext = gameContext;
-            Global = GetOrCreate(nameof(Global), Utility.AssemblyCollection.GetAssemblies());
+            Global = GetOrCreate(nameof(Global));
         }
 
-        public IScope GetOrCreate(string scopeName, params Assembly[] assemblies)
+        public IScriptScope GetOrCreate(string scopeName)
         {
             if (!scopes.ContainsKey(scopeName))
             {
                 var engine = new Engine(options =>
                 {
-                    options.AllowClr(Utility.AssemblyCollection.GetAssemblies());
+                    options.AllowClr(AssemblyCollection.GetAssemblies());
                     options.LimitRecursion(sbyte.MaxValue);
                 });
                 scopes[scopeName] = new ScriptScope(scopeName, engine);

@@ -118,8 +118,7 @@ namespace Origine
                    | BindingFlags.Static
                    | BindingFlags.InvokeMethod))
             {
-                var handler = method.GetCustomAttribute<CommandHandler>();
-                if (handler == null) continue;
+                if (!method.TryGetAttribute(out CommandHandler handler)) continue;
 
                 if (string.IsNullOrWhiteSpace(handler.Command))
                     handler.Command = method.Name;
@@ -142,8 +141,7 @@ namespace Origine
                  | BindingFlags.Static
                  | BindingFlags.InvokeMethod))
             {
-                var handler = method.GetCustomAttribute<CommandHandler>();
-                if (handler == null) continue;
+                if (!method.TryGetAttribute(out CommandHandler handler)) continue;
 
                 if (string.IsNullOrWhiteSpace(handler.Command))
                     handler.Command = method.Name;

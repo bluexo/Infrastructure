@@ -39,7 +39,7 @@ namespace Origine
             Root = GameObject.Instantiate(handle.Result);
             GameObject.DontDestroyOnLoad(Root);
 
-            var types = Utility.AssemblyCollection.GetTypes(t => t.IsSubclassOf(typeof(BaseUI)) && !t.IsAbstract);
+            var types = AssemblyCollection.GetTypes(t => t.IsSubclassOf(typeof(BaseUI)) && !t.IsAbstract);
             var tasks = new List<Task>();
             foreach (var windowType in types)
                 tasks.Add(LoadPrefabAsync(windowType));
@@ -242,7 +242,7 @@ namespace Origine
         {
             if (exclude) Exclude(window, w => w.Close());
             window.Show();
-            SortOrder();
+            //SortOrder();
         }
 
         public void SortOrder()

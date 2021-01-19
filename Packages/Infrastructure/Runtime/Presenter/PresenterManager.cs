@@ -60,7 +60,7 @@ namespace Origine
 
         public PresenterBase GetByName(string typeName)
         {
-            var type = Utility.AssemblyCollection.GetType(typeName);
+            var type = AssemblyCollection.GetType(typeName);
             return Get(type);
         }
 

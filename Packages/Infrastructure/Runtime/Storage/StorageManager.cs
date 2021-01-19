@@ -13,9 +13,6 @@ namespace Origine
         bool IsNullOrEmpty { get; }
         T Value { get; set; }
 
-        string ToJson();
-        void FromJson(string json);
-
         void Save();
         void Clear();
     }
@@ -32,14 +29,9 @@ namespace Origine
 
         public StorageManager()
         {
-            var filepath = string.Format("{0}/{1}", Application.persistentDataPath, DatabaseName);
-#if UNITY_EDITOR
-            var dbPath = string.Format(@"Assets/StreamingAssets/{0}", DatabaseName);
-#else
-            var dbPath = filepath;
-#endif
-            _connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-            Debug.Log("Final PATH: " + dbPath);
+            var filepath = Application.isEditor ? Application.streamingAssetsPath : Application.persistentDataPath;
+            if (!Directory.Exists(filepath)) Directory.CreateDirectory(filepath);
+            _connection = new SQLiteConnection($"{filepath}/{DatabaseName}", SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
         }
 
         public bool Exists(string name) => _connection.GetTableInfo(name) != null;

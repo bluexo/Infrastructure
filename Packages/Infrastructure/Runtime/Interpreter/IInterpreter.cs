@@ -6,13 +6,11 @@ namespace Origine
     /// <summary>
     /// 脚本解释器
     /// </summary>
-    public interface IInterpreter : IScope
+    public interface IInterpreter : IScriptScope
     {
-        IScope Global { get; }
-
         void SetClrAssemblies(params Assembly[] assemblies);
 
-        IScope GetOrCreate(string scopeName, params Assembly[] assemblies);
+        IScriptScope GetOrCreate(string scopeName);
 
         void Release(string scope);
     }

@@ -85,9 +85,9 @@ namespace Origine
             Debug.Log($"Create module interface={moduleType.FullName}");
 
             var implType = moduleType.IsInterface
-                ? (Utility.AssemblyCollection.GetTypes()
+                ? AssemblyCollection.GetTypes()
                     .Where(t => t.GetInterfaces().Any(i => i == moduleType))
-                    .FirstOrDefault())
+                    .FirstOrDefault()
                 : moduleType;
 
             if (implType == null)

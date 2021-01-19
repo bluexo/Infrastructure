@@ -31,8 +31,16 @@ namespace Origine
         {
             var fields = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.IgnoreCase);
 
-            var binders = fields.Select(f => (field: f, bind: f.GetCustomAttribute<AutoRefAttribute>()))
-                .Where(b => b.bind != null && b.field.FieldType.IsSubclassOf(typeof(Component)));
+            var binders = fields.Select(f =>
+            {
+                var bind = f.TryGetAttribute(out AutoRefAttribute autoRefAttribute);
+                return (field: f, bind: autoRefAttribute);
+            })
+            .Where(b =>
+            {
+                var isSubClass = b.field.FieldType.IsSubclassOf(typeof(Component));
+                return b.bind != null && isSubClass;
+            });
 
             foreach (var (field, bind) in binders)
             {

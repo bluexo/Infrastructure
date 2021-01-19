@@ -19,7 +19,7 @@ namespace Origine
 
         public IEnumerator InitializeAsync(string settingPath)
         {
-            var types = Utility.AssemblyCollection.GetTypes(t => t.IsSubclassOf(typeof(AudioGroup)));
+            var types = AssemblyCollection.GetTypes(t => t.IsSubclassOf(typeof(AudioGroup)));
             foreach (var type in types)
             {
                 var child = new GameObject(type.Name, type);

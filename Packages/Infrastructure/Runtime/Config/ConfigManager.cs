@@ -25,7 +25,7 @@ namespace Origine
 
         public IEnumerator LoadConfigFilesAsync(string path)
         {
-            var configTypes = Utility.AssemblyCollection
+            var configTypes = AssemblyCollection
                 .GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(ScriptableObject)) && t.GetProperty("List") != null)
                 .Select(t => (type: t, Key: $"{path}/{t.Name}.asset"))
@@ -44,6 +44,20 @@ namespace Origine
             var handle = await Addressables.LoadAssetAsync<ScriptableObject>(key).Task;
             if (handle == null) return;
             configs.Add(value, handle);
+        }
+
+        public bool TryGetData<TData>(int id, out TData data)
+        {
+            data = default;
+            try
+            {
+                data = GetData<TData>(id);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public TData GetData<TData>(int id)

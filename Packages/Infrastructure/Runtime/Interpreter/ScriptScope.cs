@@ -11,7 +11,7 @@ namespace Origine
     /// <summary>
     /// JS 脚本解释器
     /// </summary>
-    internal class ScriptScope : IScope
+    internal class ScriptScope : IScriptScope
     {
         public string Name { get; private set; }
         private readonly Engine _engine;
@@ -30,16 +30,15 @@ namespace Origine
 
         public bool TryExecute<T>(string src, out T value)
         {
-            var v = _engine.Execute(src).GetCompletionValue().ToObject();
+            value = default;
 
-            if (v is T t)
+            try
             {
-                value = t;
+                value = (T)_engine.Execute(src).GetCompletionValue().ToObject();
                 return true;
             }
-            else
+            catch
             {
-                value = default;
                 return false;
             }
         }

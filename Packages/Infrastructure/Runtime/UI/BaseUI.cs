@@ -8,6 +8,11 @@ using UnityEngine.EventSystems;
 
 namespace Origine
 {
+    public class RedDotAttribute : Attribute
+    {
+        public string Name { get; set; }
+    }
+
     public abstract partial class BaseUI : GameEntity
     {
         public GameObject Parent { get; protected set; }

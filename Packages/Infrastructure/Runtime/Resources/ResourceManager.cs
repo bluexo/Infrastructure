@@ -20,6 +20,7 @@ namespace Origine.Resource
         public AsyncOperationHandle<TObject> LoadAssetAsync<TObject>(string key) where TObject : UnityEngine.Object
         {
             var handle = Addressables.LoadAssetAsync<TObject>(key);
+            handle.Completed += h => LoadedAssets[key] = h.Result;
             return handle;
         }
 

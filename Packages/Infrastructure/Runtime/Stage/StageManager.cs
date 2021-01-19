@@ -32,7 +32,7 @@ namespace Origine
 
             _fsmManager = fsmManager;
 
-            var stages = Utility.AssemblyCollection
+            var stages = AssemblyCollection
                 .GetTypes()
                 .Where(t => t.IsSubclassOf(typeof(StageBase)))
                 .Select(t => (StageBase)Activator.CreateInstance(t))
