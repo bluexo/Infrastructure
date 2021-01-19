@@ -19,7 +19,6 @@ namespace Origine
             _assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (var asm in _assemblies)
                 _allTypes.UnionWith(GetLoadableTypes(asm));
-
         }
 
         /// <summary>
