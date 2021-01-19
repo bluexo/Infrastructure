@@ -37,7 +37,7 @@ namespace Origine.BT
         public string BehaviorTreeType { get; set; }
         public bool IsRunning => Status == NodeStatus.Running;
 
-        public readonly Blackboard Blackboard = new Blackboard();
+        public Blackboard Blackboard { get; private set; } = new Blackboard();
         public event EventHandler<NodeStatus> OnCompleted;
 
         public void SetData(BehaviorTreeElement behaviorTreeElement)

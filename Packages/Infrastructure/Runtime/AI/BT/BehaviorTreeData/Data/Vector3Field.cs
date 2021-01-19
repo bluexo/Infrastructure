@@ -6,9 +6,9 @@ namespace Origine
 {
     public class Vector3Field : BaseField
     {
-        public int X;
-        public int Y;
-        public int Z;
+        public float X;
+        public float Y;
+        public float Z;
 
         public override void Read(ref Reader reader)
         {

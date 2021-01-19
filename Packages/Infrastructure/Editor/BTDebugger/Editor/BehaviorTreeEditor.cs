@@ -1,13 +1,7 @@
-﻿using BehaviorTreeViewer;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-using UnityEditor;
-
-using UnityEngine;
 
 using Vector3 = UnityEngine.Vector3;
 
@@ -16,6 +10,7 @@ namespace BTDebugger
     public class BehaviorTreeEditor : NodeEditor
     {
         public static BehaviorTreeEditor Instance;
+        public static Func<BehaviorTree> TreeGetter { get; set; }
 
         private Debugger debugger;
         private BehaviorTree currentTree;
@@ -122,9 +117,9 @@ namespace BTDebugger
 
         private void Update()
         {
-            if (Application.isPlaying && debugger == null && Game.BTManager != null)
+            if (Application.isPlaying && TreeGetter != null)
             {
-                var tree = Game.BTManager.RunningTrees.FirstOrDefault();
+                var tree = TreeGetter?.Invoke();
                 if (tree != null) SetBehaviorTree(tree);
             }
 

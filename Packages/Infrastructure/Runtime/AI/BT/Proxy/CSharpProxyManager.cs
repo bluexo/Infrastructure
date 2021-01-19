@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Origine.BT
@@ -17,12 +18,11 @@ namespace Origine.BT
         {
             proxies.Clear();
 
-            var types = Utility.AssemblyCollection
-                .GetTypes(t => t.GetCustomAttribute<NodeNameAttribute>(true) != null);
+            var typesData = AssemblyCollection.GetTypeAttributesData<NodeNameAttribute>();
 
-            foreach (var type in types)
+            foreach (var (type, attrs) in typesData)
             {
-                var attr = type.GetCustomAttribute<NodeNameAttribute>();
+                var attr = attrs.FirstOrDefault() as NodeNameAttribute;
                 Register(attr.Name, attr.NodeType, type);
             }
 

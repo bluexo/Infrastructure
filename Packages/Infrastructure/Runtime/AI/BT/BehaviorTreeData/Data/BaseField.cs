@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+using UniRx;
 
 namespace Origine
 {
@@ -17,7 +21,7 @@ namespace Origine
         public static implicit operator long(BaseField field) => (field as LongField).Value;
         public static implicit operator List<long>(BaseField field) => (field as RepeatLongField).Value;
         public static implicit operator string(BaseField field) => (field as StringField).Value;
-        public static implicit operator List<string>(BaseField field) => (field as RepeatStringField).Value;
+        public static implicit operator List<string> (BaseField field) => (field as RepeatStringField).Value;
         public static implicit operator bool(BaseField field) => (field as BooleanField).Value;
 
         #endregion
