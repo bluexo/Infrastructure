@@ -65,8 +65,8 @@ namespace Wars
 
         private void InitializeInterpreter()
         {
-            Interpreter.SetValue("GUI", new Func<string, BaseUI>(ui => UIManager.GetOrCreate(Utility.AssemblyCollection.GetType(ui))));
-            Interpreter.SetValue("STG", new Action<string>(stage => StageManager.Switch(Utility.AssemblyCollection.GetType(stage))));
+            Interpreter.SetValue("GUI", new Func<string, BaseUI>(ui => UIManager.GetOrCreate(AssemblyCollection.GetType(ui))));
+            Interpreter.SetValue("STG", new Action<string>(stage => StageManager.Switch(AssemblyCollection.GetType(stage))));
             Interpreter.SetValue("PST", new Func<string, PresenterBase>(controller => PresenterManager.GetByName(controller)));
             Interpreter.SetValue("CMD", new Action<string, object>((c, o) => EventManager.Publish(CommandEventArgs.EventId, new CommandEventArgs(c, o))));
         }
