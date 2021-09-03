@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Origine.Setting
+namespace Origine
 {
     /// <summary>
     /// 游戏配置管理器。

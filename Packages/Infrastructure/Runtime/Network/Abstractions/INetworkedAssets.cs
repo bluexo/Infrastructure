@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     /// <summary>
     /// 网络资源

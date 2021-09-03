@@ -12,6 +12,7 @@ namespace Origine
     {
         public GameObject Parent { get; protected set; }
         public IReadOnlyList<BaseUI> Childs => _childWindows;
+        public IEnumerable<BaseUI> Groups => _groupWindows;
 
         protected BaseUI _parentWindow;
         protected GameObject _prefab;
@@ -23,7 +24,7 @@ namespace Origine
         public bool IsDestroyed { get; protected set; }
         public int Order { get; protected set; }
 
-        public virtual string AssetCategroyPrefix { get; protected set; } = "UI";
+        public virtual string AssetCategroyPrefix { get; set; } = "UI";
         public virtual string AssetName { get; protected set; }
 
         protected BaseUI()
@@ -39,8 +40,19 @@ namespace Origine
         {
         }
 
-        protected virtual void ConfigureGroup(ICollection<BaseUI> groupWindows)
+        protected virtual void ConfigureGroup()
         {
+
+        }
+
+        protected void AddToGroup<T>() where T : BaseUI
+        {
+            _groupWindows.Add(_manager.GetOrCreate<T>());
+        }
+
+        public virtual bool CanShow()
+        {
+            return true;
         }
 
         public bool IsInGroup(BaseUI window) => _groupWindows.Contains(window);
@@ -50,6 +62,7 @@ namespace Origine
         protected virtual void BeforeClose() => BeforeCloseComponent();
 
         protected virtual void BeforeDestory() => BeforeDestoryComponent();
+
 
         public override void OnUpdate(float deltaTime)
         {
@@ -73,7 +86,9 @@ namespace Origine
         {
             Parent = parent;
             _prefab = prefab;
+            if (prefab.TryGetComponent(out Canvas canvas)) Order = canvas.sortingOrder;
             Create();
+
         }
 
         private void Create()
@@ -91,7 +106,7 @@ namespace Origine
                 canvas.sortingOrder += parentCanvas.sortingOrder;
             }
             CollectAutoReferences(Self);
-            ConfigureGroup(_groupWindows);
+            ConfigureGroup();
             AfterInit();
             InitializeChildWindow();
         }
@@ -101,11 +116,10 @@ namespace Origine
             if (_prefab && !Self)
                 Create();
 
-            if (Self)
-            {
-                if (Self.activeSelf) return;
+            if (!IsVisible)
                 Self.SetActive(true);
-            }
+            else
+                BeforeClose();
 
             AfterShow();
 
@@ -243,6 +257,7 @@ namespace Origine
             PointerEventListener.GetOrAdd(comp.gameObject).onClick = handle;
         }
 
+        protected static void RegisterEventClickDown(Component comp, Action<PointerEventData> handle) => RegisterEventClickDown(comp.gameObject, handle);
         protected static void RegisterEventClickDown(GameObject go, Action<PointerEventData> handle)
         {
             if (null == go || null == handle)
@@ -251,6 +266,7 @@ namespace Origine
             PointerEventListener.GetOrAdd(go).onDown = handle;
         }
 
+        protected static void RegisterEventClickUp(Component comp, Action<PointerEventData> handle) => RegisterEventClickUp(comp.gameObject, handle);
         protected static void RegisterEventClickUp(GameObject go, Action<PointerEventData> handle)
         {
             if (null == go || null == handle)

@@ -24,13 +24,14 @@
         private Dictionary<string, AudioClip> _audioClipDict = new Dictionary<string, AudioClip>();
         protected readonly List<AudioPlayer> _audioPlayerList = new List<AudioPlayer>();
         private int _nextAudioPlayerNo = 0;
+        public float Volume => _baseVolume;
 
         public virtual int AudioPlayerCount { get; protected set; }
-        private float _baseVolume = 1f;
+        public const float DEFAULTVOLUME = .5f;
+        private float _baseVolume = DEFAULTVOLUME;
 
         protected virtual void Awake()
         {
-
         }
 
         public virtual IEnumerator InitializeAsync(AudioManagerSetting config)
@@ -39,6 +40,7 @@
             for (int i = 0; i < AudioPlayerCount; i++)
                 _audioPlayerList.Add(new AudioPlayer(gameObject.AddComponent<AudioSource>()));
             yield return LoadAudioClip(config.PreloadAudioPath, config.CacheType, config.IsReleaseCache);
+            ChangeBaseVolume(PlayerPrefs.GetFloat(GetType().FullName, config.BaseVolume));
         }
 
         protected IEnumerator LoadAudioClip(string preloadPath, AudioCacheType cacheType, bool isReleaseCache)
@@ -56,14 +58,18 @@
 
         public void Update()
         {
-            foreach (var audioPlayer in _audioPlayerList)
+            for (var i = 0; i < _audioPlayerList.Count; i++)
+            {
+                var audioPlayer = _audioPlayerList[i];
                 if (audioPlayer.CurrentState != AudioPlayer.State.Wait)
                     audioPlayer.Update();
+            }
         }
 
         public void ChangeBaseVolume(float baseVolume)
         {
             _baseVolume = baseVolume;
+            PlayerPrefs.SetFloat(GetType().FullName, _baseVolume);
             _audioPlayerList.Where(player => player.CurrentState != AudioPlayer.State.Wait).ToList()
                 .ForEach(player => player.ChangeVolume(_baseVolume));
         }
@@ -160,6 +166,12 @@
                 if (!FilterPlayer(player, audioName)) return;
                 player.Pause();
             });
+
+        public void SetPause(bool pause)
+        {
+            if (pause) Pause();
+            else Resume();
+        }
 
         public void Switch()
         {

@@ -2,12 +2,12 @@
 {
     using UnityEngine;
 
-    [CreateAssetMenu(menuName = "Tools/AudioManagerSetting")]
+    [CreateAssetMenu(menuName = "Configs/AudioManagerSetting")]
     public class AudioManagerSetting : ScriptableObject
     {
         public string PreloadAudioPath;
         public int AudioPlayerCount;
-        public float BaseVolume;
+        public float BaseVolume = 1f;
         public bool ShouldAdjustVolumeRate;
         public bool IsDestroyManager;
         public bool IsReleaseCache;

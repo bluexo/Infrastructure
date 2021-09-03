@@ -1,4 +1,4 @@
-﻿namespace Mecha.Network
+﻿namespace Love.Network
 {
     public static class MessageId
     {

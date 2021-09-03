@@ -13,9 +13,8 @@
 
         public override IEnumerator InitializeAsync(AudioManagerSetting setting)
         {
-            yield return base.InitializeAsync(setting);
             _shouldAdjustVolumeRate = setting.ShouldAdjustVolumeRate;
-            ChangeBaseVolume(setting.BaseVolume);
+            yield return base.InitializeAsync(setting);
         }
 
         public void Play(AudioClip audioClip,

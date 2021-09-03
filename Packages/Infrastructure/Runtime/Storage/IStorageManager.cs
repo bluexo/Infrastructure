@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Origine
 {
@@ -13,7 +14,9 @@ namespace Origine
         /// <typeparam name="T"></typeparam>
         /// <param name="name"></param>
         /// <returns></returns>
-        IStorageItem<T> GetOrCreate<T>(string name) where T : new();
+        IStorageItem<T> GetOrCreate<T>(string name = default) where T : new();
+
+        void SaveData<T>(Action<T> action, string name = default) where T : new();
 
         /// <summary>
         /// 是否存在

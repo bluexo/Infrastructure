@@ -11,24 +11,20 @@ namespace Origine
 {
     public partial class GameEntity
     {
-        protected readonly CompositeDisposable compositeDisposables = new CompositeDisposable();
-
-        public IDisposable RegisterTimer(float durTime, float period, Action<long> action)
+        public void RegisterTimerUntilDestroy(float durTime, float period, Action<long> action)
         {
-            var disposable = Observable
-                .Timer(TimeSpan.FromSeconds(durTime), TimeSpan.FromSeconds(period))
-                .SubscribeOnMainThread()
-                .Subscribe(action).AddTo(compositeDisposables);
-            return disposable;
+            Observable
+               .Timer(TimeSpan.FromSeconds(durTime), TimeSpan.FromSeconds(period))
+               .SubscribeOnMainThread()
+               .Subscribe(action).AddTo(Self);
         }
 
-        public IDisposable RegisterDelay(float tick, Action<long> action)
+        public void RegisterDelayUntilDestroy(float tick, Action<long> action)
         {
-            var disposable = Observable
-                .Timer(TimeSpan.FromSeconds(tick))
-                .SubscribeOnMainThread()
-                .Subscribe(action).AddTo(compositeDisposables);
-            return disposable;
+            Observable
+               .Timer(TimeSpan.FromSeconds(tick))
+               .SubscribeOnMainThread()
+               .Subscribe(action).AddTo(Self);
         }
     }
 }

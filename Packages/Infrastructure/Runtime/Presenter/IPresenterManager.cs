@@ -9,10 +9,12 @@ namespace Origine
 {
     public interface IPresenterManager
     {
+        void Initialize();
+
         T Get<T>() where T : PresenterBase;
 
         PresenterBase Get(Type type);
-        PresenterBase GetByName(string type);
+        PresenterBase Get(string typeNameOrAlias);
 
         void Reset();
     }

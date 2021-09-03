@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using LiteNetLib;
 using LiteNetLib.Utils;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public enum NetworkEvent
     {

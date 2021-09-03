@@ -2,7 +2,7 @@
 using System.Numerics;
 using LiteNetLib.Utils;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public class GenericValueMessage<TType> : INetSerializable
     {
@@ -19,7 +19,7 @@ namespace Mecha.Network
         }
     }
 
-    #region Implement for general usages and serializable
+#region Implement for general usages and serializable
     [Serializable]
     public class BoolMessage : GenericValueMessage<bool>
     {

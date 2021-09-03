@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 using static LiteNetLib.EventBasedNetListener;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public enum AckResponseCode : byte
     {

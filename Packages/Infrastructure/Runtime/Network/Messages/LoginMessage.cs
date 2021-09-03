@@ -1,6 +1,6 @@
 ﻿using LiteNetLib.Utils;
 
-namespace Mecha.Network.Messages
+namespace Love.Network.Messages
 {
     public class LoginMessage : INetSerializable
     {

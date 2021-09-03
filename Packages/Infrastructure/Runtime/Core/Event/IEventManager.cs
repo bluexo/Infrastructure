@@ -53,6 +53,14 @@ namespace Origine
         void SetDefaultHandler(EventHandler<GameEventArgs> handler);
 
         /// <summary>
+        /// 发布简单事件
+        /// </summary>
+        /// <typeparam name="TEventArgs"></typeparam>
+        /// <param name="e"></param>
+        void Publish<TEventArgs>(TEventArgs e = default) where TEventArgs : GameEventArgs, new();
+        void PublishImmediately<TEventArgs>(TEventArgs e = default) where TEventArgs : GameEventArgs, new();
+
+        /// <summary>
         /// 发布事件，这个操作是线程安全的，即使不在主线程中抛出，也可保证在主线程中回调事件处理函数，但事件会在抛出后的下一帧分发。
         /// </summary>
         /// <param name="sender">事件源。</param>

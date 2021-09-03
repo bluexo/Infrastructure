@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     /// <summary>
     /// 网络对象类型

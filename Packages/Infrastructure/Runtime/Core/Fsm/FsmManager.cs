@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Origine.Fsm
+namespace Origine
 {
     /// <summary>
     /// 有限状态机管理器。
     /// </summary>
-    internal sealed class FsmManager : GameModule, IFsmManager
+    public sealed class FsmManager : GameModule, IFsmManager
     {
         private readonly Dictionary<TypeNamePair, Fsm> _fsms;
         private readonly List<Fsm> _tempFsms;

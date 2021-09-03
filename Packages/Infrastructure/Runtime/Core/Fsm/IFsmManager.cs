@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Origine.Fsm
+namespace Origine
 {
     /// <summary>
     /// 有限状态机管理器。

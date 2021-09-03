@@ -51,11 +51,9 @@ namespace Origine
 
         public void SetValue(string key, object parameter) => Global.SetValue(key, parameter);
 
-        public object Execute(string src) => Global.Execute(src);
+        public void Execute(string src) => Global.Execute(src);
 
         public bool TryExecute<T>(string src, out T value) => Global.TryExecute(src, out value);
-
-        public object Execute(string src, params InterpreterContext[] contexts) => Global.Execute(src, contexts);
 
         public override void OnDispose()
         {

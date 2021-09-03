@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Concurrent;
 using LiteNetLib.Utils;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public class NetworkedAssets
     {

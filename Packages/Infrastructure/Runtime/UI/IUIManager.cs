@@ -11,7 +11,12 @@ namespace Origine
         IReadOnlyDictionary<Type, GameObject> Prefabs { get; }
         IReadOnlyList<BaseUI> Windows { get; }
 
-        IEnumerator InitializeAsync(string rootPath);
+        GameContext Context { get; }
+
+        event EventHandler<BaseUI> UIShowEvent;
+        event EventHandler<BaseUI> UICloseEvent;
+
+        IEnumerator InitializeAsync(string rootPath, string variant = default);
 
         T Find<T>() where T : BaseUI;
 
@@ -19,13 +24,19 @@ namespace Origine
            where TParent : BaseUI
            where TChild : BaseUI;
 
-        BaseUI ShowByName(string name, bool exclude = false);
+        BaseUI Show(string name, bool exclude = false);
+
+        void Show<T>() where T : BaseUI;
 
         T Show<T>(bool exclude = false) where T : BaseUI;
+        
+        void Toggle<T>() where T : BaseUI;
 
         T GetOrCreate<T>() where T : BaseUI;
 
         BaseUI GetOrCreate(Type type);
+
+        BaseUI GetOrCreate(string typeName);
 
         BaseUI Show(Type windowType, bool exclude = false);
 

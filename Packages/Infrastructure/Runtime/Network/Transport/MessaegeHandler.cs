@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LiteNetLib.Utils;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public struct MessageHandler
     {

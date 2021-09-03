@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     /// <summary>
     /// 游戏服务器

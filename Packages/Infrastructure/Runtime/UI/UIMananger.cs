@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
+using System.Reflection;
+
+using UniRx;
 
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -15,6 +16,9 @@ namespace Origine
         public IReadOnlyDictionary<Type, GameObject> Prefabs => prefabs;
         public IReadOnlyList<BaseUI> Windows => uiWindows;
         public GameObject Root { get; private set; }
+        public GameContext Context { get; private set; }
+
+        public event EventHandler<BaseUI> UIShowEvent, UICloseEvent;
 
         private readonly List<BaseUI> uiWindows = new List<BaseUI>();
         private readonly Dictionary<Type, GameObject> prefabs = new Dictionary<Type, GameObject>();
@@ -23,42 +27,41 @@ namespace Origine
 
         public override int Priority => 0;
 
-        private readonly GameContext _gameContext;
         private readonly IEventManager _eventManager;
 
         public UIManager(GameContext gameContext)
         {
-            _gameContext = gameContext;
+            Context = gameContext;
             _eventManager = gameContext.GetModule<IEventManager>();
         }
 
-        public IEnumerator InitializeAsync(string assetName)
+        public IEnumerator InitializeAsync(string rootPath, string variant = null)
         {
-            var handle = Addressables.LoadAssetAsync<GameObject>(assetName);
+            var handle = Addressables.LoadAssetAsync<GameObject>(rootPath);
             yield return handle;
             Root = GameObject.Instantiate(handle.Result);
             GameObject.DontDestroyOnLoad(Root);
 
-            var types = AssemblyCollection.GetTypes(t => t.IsSubclassOf(typeof(BaseUI)) && !t.IsAbstract);
-            var tasks = new List<Task>();
-            foreach (var windowType in types)
-                tasks.Add(LoadPrefabAsync(windowType));
-            var completeTask = Task.WhenAll(tasks);
+            var waitables = new List<IObservable<Unit>>();
+            foreach (var type in AssemblyCollection.GetTypes(t => t.IsSubclassOf(typeof(BaseUI)) && !t.IsAbstract))
+                waitables.Add(LoadPrefabAsync(type, variant).ToObservable());
 
-            yield return new WaitUntil(() => completeTask.IsCompleted || completeTask.IsFaulted);
+            yield return Observable.WhenAll(waitables).ToAwaitableEnumerator();
         }
 
-        private async Task LoadPrefabAsync(Type windowType)
+        private IEnumerator LoadPrefabAsync(Type uiType, string variant)
         {
-            var window = (BaseUI)Activator.CreateInstance(windowType);
-            var windowHandle = await Addressables.LoadAssetAsync<GameObject>(window.AssetName).Task;
-            if (!windowHandle)
+            var ui = (BaseUI)Activator.CreateInstance(uiType);
+            if (!string.IsNullOrWhiteSpace(variant)) ui.AssetCategroyPrefix = $"{ui.AssetCategroyPrefix}/{variant}";
+            var handle = Addressables.LoadAssetAsync<GameObject>(ui.AssetName);
+            yield return handle;
+            if (!handle.IsValid())
             {
-                Debug.LogError($"Cannot found ui asset {window.AssetName}");
-                return;
+                Debug.LogError($"Cannot found ui asset {ui.AssetName}");
+                yield break;
             }
-            windowHandle.SetActive(false);
-            prefabs.Add(windowType, windowHandle);
+            handle.Result.SetActive(false);
+            prefabs[uiType] = handle.Result;
         }
 
         public override void OnUpdate(float deltaTime)
@@ -92,18 +95,6 @@ namespace Origine
             return default;
         }
 
-        public BaseUI FindByName(string name)
-        {
-            BaseUI tmpWnd = null;
-            for (int i = 0, max = uiWindows.Count; i < max; ++i)
-                if (!uiWindows[i].AssetName.Equals(name))
-                {
-                    tmpWnd = uiWindows[i];
-                    break;
-                }
-            return tmpWnd;
-        }
-
         public BaseUI GetOrCreate(Type type)
         {
             var window = uiWindows.FirstOrDefault(w => w.GetType() == type);
@@ -111,6 +102,9 @@ namespace Origine
             if (window == null)
             {
                 window = (BaseUI)Activator.CreateInstance(type);
+                type
+                    .GetField("_manager", BindingFlags.Instance | BindingFlags.NonPublic)
+                    .SetValue(window, this);
                 uiWindows.Add(window);
             }
 
@@ -121,37 +115,44 @@ namespace Origine
             }
 
             if (!window.Self)
+            {
                 window.Initialize(Root, prefabs[type]);
+                SortOrder();
+            }
+
 
             return window;
         }
 
         public T GetOrCreate<T>() where T : BaseUI => (T)GetOrCreate(typeof(T));
 
-        public BaseUI GetOrCreateByName(string name)
+        public BaseUI GetOrCreate(string name)
         {
-            var tmpWindow = FindByName(name);
+            var ui = uiWindows.FirstOrDefault(u => u.GetType().Name == name);
 
-            if (null != tmpWindow)
-                return tmpWindow;
+            if (null != ui)
+                return ui;
 
-            Type tmpType = Type.GetType(name);
+            Type tmpType = AssemblyCollection.GetType(name);
             if (null == tmpType)
-                return tmpWindow;
+                return ui;
 
-            tmpWindow = Activator.CreateInstance(tmpType) as BaseUI;
-            if (null == tmpWindow)
-                return tmpWindow;
-            uiWindows.Add(tmpWindow);
-
-            return tmpWindow;
+            return GetOrCreate(tmpType);
         }
+
+        public void Show<T>() where T : BaseUI => Show<T>(false);
 
         public T Show<T>(bool exclude = false) where T : BaseUI
         {
             var window = GetOrCreate<T>();
             ShowInternal(window, exclude);
             return window;
+        }
+
+        public void Toggle<T>() where T : BaseUI
+        {
+            var window = GetOrCreate<T>();
+            window.SetVisible(!window.IsVisible);
         }
 
         private void Exclude(BaseUI current, Action<BaseUI> action)
@@ -175,9 +176,9 @@ namespace Origine
             return window;
         }
 
-        public BaseUI ShowByName(string name, bool exclude = false)
+        public BaseUI Show(string name, bool exclude = false)
         {
-            var window = GetOrCreateByName(name);
+            var window = GetOrCreate(name);
             ShowInternal(window, exclude);
             return window;
         }
@@ -199,7 +200,11 @@ namespace Origine
         {
             var window = GetOrCreate<T>();
             if (window is IInitializer<A> initializer)
+            {
                 initializer.Initialize(a);
+                foreach (var group in window.Groups)
+                    if (group is IInitializer<A> groupInitializer) groupInitializer.Initialize(a);
+            }
 
             ShowInternal(window, exclude);
             return window;
@@ -210,7 +215,11 @@ namespace Origine
             var window = GetOrCreate<T>();
 
             if (window is IInitializer<A, B> initializer)
+            {
                 initializer.Initialize(a, b);
+                foreach (var group in window.Groups)
+                    if (group is IInitializer<A, B> groupInitializer) groupInitializer.Initialize(a, b);
+            }
 
             ShowInternal(window, exclude);
             return window;
@@ -221,7 +230,11 @@ namespace Origine
             var window = GetOrCreate<T>();
 
             if (window is IInitializer<A, B, C> initializer)
+            {
                 initializer.Initialize(a, b, c);
+                foreach (var group in window.Groups)
+                    if (group is IInitializer<A, B, C> groupInitializer) groupInitializer.Initialize(a, b, c);
+            }
 
             ShowInternal(window, exclude);
             return window;
@@ -232,17 +245,23 @@ namespace Origine
             var window = GetOrCreate<T>();
 
             if (window is IInitializer<A, B, C, D> initializer)
+            {
                 initializer.Initialize(a, b, c, d);
+                foreach (var group in window.Groups)
+                    if (group is IInitializer<A, B, C, D> groupInitializer) groupInitializer.Initialize(a, b, c, d);
+            }
 
             ShowInternal(window, exclude);
             return window;
         }
 
-        private void ShowInternal(BaseUI window, bool exclude)
+        private void ShowInternal(BaseUI ui, bool exclude)
         {
-            if (exclude) Exclude(window, w => w.Close());
-            window.Show();
-            //SortOrder();
+            if (!ui.CanShow())
+                return;
+            if (exclude) Exclude(ui, w => w.Close());
+            ui.Show();
+            UIShowEvent?.Invoke(this, ui);
         }
 
         public void SortOrder()
@@ -258,8 +277,9 @@ namespace Origine
 
         public void Close<T>() where T : BaseUI
         {
-            T tmpWindow = Find<T>();
-            tmpWindow?.Close();
+            var ui = Find<T>();
+            ui?.Close();
+            UICloseEvent?.Invoke(this, ui);
         }
 
         public void CloseExcept<T>(params T[] excepWindows) where T : BaseUI
@@ -271,10 +291,8 @@ namespace Origine
 
         public void Destroy<T>() where T : BaseUI
         {
-            T tmpWindow = Find<T>();
-
-            if (null != tmpWindow)
-                tmpWindow.OnDestroy();
+            var ui = Find<T>();
+            ui?.OnDestroy();
         }
     }
 }

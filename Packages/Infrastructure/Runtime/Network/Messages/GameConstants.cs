@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mecha.Network.Messages
+namespace Love.Network.Messages
 {
     public enum Faction : sbyte
     {

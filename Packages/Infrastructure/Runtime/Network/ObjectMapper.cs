@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public static class ObjectMapper
     {

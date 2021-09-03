@@ -24,9 +24,7 @@ namespace Origine
 
         public void SetValue(string key, object parameter) => _engine.SetValue(key, parameter);
 
-        public object Execute(string src) => _engine.Execute(src)
-                .GetCompletionValue()
-                .ToObject();
+        public void Execute(string src) => _engine.Execute(src);
 
         public bool TryExecute<T>(string src, out T value)
         {
@@ -34,7 +32,7 @@ namespace Origine
 
             try
             {
-                value = (T)_engine.Execute(src).GetCompletionValue().ToObject();
+                value = (T)_engine.Evaluate(src).ToObject();
                 return true;
             }
             catch
@@ -43,19 +41,10 @@ namespace Origine
             }
         }
 
-        public object Execute(string src, params InterpreterContext[] contexts)
-        {
-            foreach (var ctx in contexts)
-                _engine.SetValue(ctx.Name, ctx.Value);
-            return Execute(src);
-        }
-
         public void OnDispose()
         {
             _engine.ResetCallStack();
-            _engine.ResetMemoryUsage();
-            _engine.ResetStatementsCount();
-            _engine.ResetTimeoutTicks();
+            _engine.ResetConstraints();
         }
     }
 }

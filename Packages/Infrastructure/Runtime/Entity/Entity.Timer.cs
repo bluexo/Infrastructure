@@ -13,6 +13,8 @@ namespace Origine
     {
         protected readonly CompositeDisposable compositeDisposables = new CompositeDisposable();
 
+        public IDisposable RegisterTimer(float period, Action<long> action) => RegisterTimer(0, period, action);
+
         public IDisposable RegisterTimer(float durTime, float period, Action<long> action)
         {
             var disposable = Observable

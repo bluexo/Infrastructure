@@ -3,7 +3,7 @@
 using System.Collections.Concurrent;
 using System.Linq;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     /// <summary>
     /// 网络对象

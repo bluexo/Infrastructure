@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace Wars
+namespace Love
 {
     public static class SkinnedMeshCombiner
     {

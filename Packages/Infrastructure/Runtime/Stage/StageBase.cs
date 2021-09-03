@@ -1,6 +1,4 @@
-﻿using Origine.Fsm;
-
-namespace Origine
+﻿namespace Origine
 {
     /// <summary>
     /// 流程基类。

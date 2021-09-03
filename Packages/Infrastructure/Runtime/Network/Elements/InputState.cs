@@ -2,7 +2,7 @@
 using System.Numerics;
 using LiteNetLib.Utils;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     [Flags]
     public enum Direction : byte

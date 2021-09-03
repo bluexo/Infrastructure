@@ -70,6 +70,19 @@ namespace Origine
         /// <summary>
         /// 从引用池获取引用。
         /// </summary>
+        /// <typeparam name="T">引用类型。</typeparam>
+        /// <returns>引用。</returns>
+        public static T Take<T>(Action<T> postAction) where T : class, IReference, new()
+        {
+            var obj = GetReferenceCollection(typeof(T)).Take<T>();
+            postAction?.Invoke(obj);
+            return obj;
+        }
+
+
+        /// <summary>
+        /// 从引用池获取引用。
+        /// </summary>
         /// <param name="referenceType">引用类型。</param>
         /// <returns>引用。</returns>
         public static IReference Take(Type referenceType)

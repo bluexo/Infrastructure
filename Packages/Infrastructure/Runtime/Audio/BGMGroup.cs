@@ -7,12 +7,6 @@
 
     public partial class BGMGroup : AudioGroup
     {
-        public override IEnumerator InitializeAsync(AudioManagerSetting setting)
-        {
-            yield return base.InitializeAsync(setting);
-            ChangeBaseVolume(setting.BaseVolume);
-        }
-
         public void Play(AudioClip audioClip,
             float volumeRate = 1,
             float delay = 0,

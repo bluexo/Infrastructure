@@ -7,7 +7,7 @@ namespace Origine
     /// <summary>
     /// 事件管理器。
     /// </summary>
-    internal sealed class EventManager : GameModule, IEventManager
+    public sealed class EventManager : GameModule, IEventManager
     {
         private readonly EventPool<GameEventArgs> _eventPool;
         private readonly Dictionary<string, List<Action<CommandEventArgs>>> commands = new Dictionary<string, List<Action<CommandEventArgs>>>();
@@ -83,6 +83,18 @@ namespace Origine
         /// </summary>
         /// <param name="handler">要设置的默认事件处理函数。</param>
         public void SetDefaultHandler(EventHandler<GameEventArgs> handler) => _eventPool.SetDefaultHandler(handler);
+
+        public void Publish<TEventArgs>(TEventArgs e = default) where TEventArgs : GameEventArgs, new()
+        {
+            e = e ?? ReferencePool.Take<TEventArgs>();
+            Publish(this, e);
+        }
+
+        public void PublishImmediately<TEventArgs>(TEventArgs e = default) where TEventArgs : GameEventArgs, new()
+        {
+            e = e ?? ReferencePool.Take<TEventArgs>();
+            PublishImmediately(this, e);
+        }
 
         /// <summary>
         /// 抛出事件，这个操作是线程安全的，即使不在主线程中抛出，也可保证在主线程中回调事件处理函数，但事件会在抛出后的下一帧分发。

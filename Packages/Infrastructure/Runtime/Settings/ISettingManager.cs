@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Origine.Setting
+namespace Origine
 {
     /// <summary>
     /// 游戏配置管理器接口。

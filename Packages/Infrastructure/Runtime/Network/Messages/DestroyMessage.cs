@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using LiteNetLib.Utils;
 
-namespace Mecha
+namespace Love
 {
     public class DestroyMessage : INetSerializable
     {

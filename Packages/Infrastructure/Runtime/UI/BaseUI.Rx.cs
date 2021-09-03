@@ -11,8 +11,14 @@ using UniRx.Triggers;
 
 namespace Origine
 {
-    public abstract partial class BaseUI
+    [AttributeUsage(AttributeTargets.Class)]
+    public class PreloadAttribute : Attribute
     {
 
+    }
+
+    public abstract class PresenterBaseUI<TPresenter> : BaseUI where TPresenter : PresenterBase
+    {
+       
     }
 }

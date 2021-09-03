@@ -20,6 +20,7 @@ namespace Origine
 
     public static class CodeGenerateUtility
     {
+#if !UNITY_IOS
         public static string GenerateCSharpCode(string path,
             string ns,
             string className,
@@ -52,6 +53,10 @@ namespace Origine
 
             return sourceFile;
         }
+#endif
+
     }
+
+
 
 }

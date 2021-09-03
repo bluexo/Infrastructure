@@ -72,13 +72,19 @@ namespace Origine
 
                 if (!child)
                 {
-                    Debug.LogError($"Cannot found child {nameof(GameObject)}={name} from {parent.name}");
+                    Debug.LogError($"Cannot found child {nameof(GameObject)}={name} from {parent?.name}");
                     return null;
                 }
 
                 return child;
             }
         }
+
+        public bool TryGetUnityComponent<T>(out T comp) => Self.TryGetComponent(out comp);
+
+        public T FindUnityComponent<T>(string name) where T : Component => Utility.Find<T>(Self, name);
+
+        public T GetUnityComponent<T>() where T : Component => Self.GetComponent<T>();
 
         public override void OnDestroy()
         {

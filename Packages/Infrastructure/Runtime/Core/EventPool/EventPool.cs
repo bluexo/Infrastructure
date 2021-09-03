@@ -1,9 +1,4 @@
-﻿//------------------------------------------------------------
-//
-
-//
-//
-//------------------------------------------------------------
+﻿
 
 using System;
 using System.Collections.Generic;
@@ -17,7 +12,7 @@ namespace Origine
     /// <typeparam name="T">事件类型。</typeparam>
     internal sealed partial class EventPool<T> where T : GameEventArgs
     {
-        private readonly MultiDictionary<int, EventHandler<T>> _eventHandlers;
+        private readonly MultiValuesDictionary<int, EventHandler<T>> _eventHandlers;
         private readonly Queue<Event> _events;
         private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> _cachedNodes;
         private readonly Dictionary<object, LinkedListNode<EventHandler<T>>> _tempNodes;
@@ -30,7 +25,7 @@ namespace Origine
         /// <param name="mode">事件池模式。</param>
         public EventPool(EventPoolMode mode)
         {
-            _eventHandlers = new MultiDictionary<int, EventHandler<T>>();
+            _eventHandlers = new MultiValuesDictionary<int, EventHandler<T>>();
             _events = new Queue<Event>();
             _cachedNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();
             _tempNodes = new Dictionary<object, LinkedListNode<EventHandler<T>>>();

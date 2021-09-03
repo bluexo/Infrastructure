@@ -4,7 +4,7 @@ using LiteNetLib;
 using LiteNetLib.Utils;
 using System;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public struct TransformState
     {

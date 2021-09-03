@@ -3,7 +3,7 @@ using LiteNetLib;
 using LiteNetLib.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public partial class NetworkManager
     {

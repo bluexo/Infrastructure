@@ -1,7 +1,7 @@
 ﻿using System;
 using LiteNetLib;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     /// <summary>
     /// 游戏客户端

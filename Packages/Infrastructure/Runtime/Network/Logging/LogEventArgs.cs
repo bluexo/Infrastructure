@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 
-namespace Mecha
+namespace Love
 {
     public class LogEventArgs 
     {

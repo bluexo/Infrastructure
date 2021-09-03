@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Origine.Fsm
+namespace Origine
 {
     /// <summary>
     /// 有限状态机状态基类。

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Mecha.Network
+namespace Love.Network
 {
     public class NetworkSession
     {
