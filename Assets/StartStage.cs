@@ -1,8 +1,4 @@
 ﻿using Origine;
-using Origine.Fsm;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class StartStage : StageBase
 {

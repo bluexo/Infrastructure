@@ -1,14 +1,13 @@
 {
     "name": "Infrastructure",
-    "rootNamespace": "",
     "references": [
-        "GUID:22fa9490e6f1bfd45b7b25283a72d60b",
-        "GUID:d19942b06b59cef41a7139f975d4dc1c",
-        "GUID:c552a949ff4d94831a40ed66f5e7e584",
-        "GUID:ab5f33bc00e324807b32dfe50242bd68",
-        "GUID:ac145e6b8c6034cdbadc8c6e26aedbcf",
-        "GUID:1e8e55397bd004beaba78a667566665f",
-        "GUID:1f7b94c1fdd49674fb235b46556aca3b"
+        "UniRx",
+        "UniRx.Async",
+        "Unity.Notifications.Android",
+        "Unity.Notifications.iOS",
+        "LiteDB",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BehaviorTreeViewer
+namespace Origine
 {
     public class Debugger
     {

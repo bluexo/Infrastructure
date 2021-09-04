@@ -3,7 +3,7 @@ using Origine.BT;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BehaviorTreeViewer
+namespace Origine
 {
     public class NodeDesigner
     {

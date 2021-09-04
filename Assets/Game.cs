@@ -1,14 +1,10 @@
 ﻿using Origine;
 using Origine.BT;
-using Origine.Fsm;
-using Origine.ObjectPool;
-using Origine.Setting;
 
 using System;
 using System.Collections;
 
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace Wars
 {
@@ -56,8 +52,8 @@ namespace Wars
 
         public IEnumerator Start()
         {
-            yield return ConfigManager.LoadConfigFilesAsync($"ConfigFiles");
-            yield return UIManager.InitializeAsync($"UI/UIManager.prefab");
+            yield return ConfigManager.InitializeAsync($"ConfigFiles");
+            yield return UIManager.InitializeAsync($"UIManager.prefab");
             yield return AudioManager.InitializeAsync($"Settings");
             InitializeInterpreter();
             Initialized = true;
@@ -67,7 +63,7 @@ namespace Wars
         {
             Interpreter.SetValue("GUI", new Func<string, BaseUI>(ui => UIManager.GetOrCreate(AssemblyCollection.GetType(ui))));
             Interpreter.SetValue("STG", new Action<string>(stage => StageManager.Switch(AssemblyCollection.GetType(stage))));
-            Interpreter.SetValue("PST", new Func<string, PresenterBase>(controller => PresenterManager.GetByName(controller)));
+            Interpreter.SetValue("PST", new Func<string, PresenterBase>(controller => PresenterManager.Get(controller)));
             Interpreter.SetValue("CMD", new Action<string, object>((c, o) => EventManager.Publish(CommandEventArgs.EventId, new CommandEventArgs(c, o))));
         }
 

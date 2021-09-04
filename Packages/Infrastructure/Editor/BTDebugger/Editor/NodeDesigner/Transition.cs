@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Serialization;
 
-namespace BehaviorTreeViewer
+namespace Origine
 {
     public class Transition
     {

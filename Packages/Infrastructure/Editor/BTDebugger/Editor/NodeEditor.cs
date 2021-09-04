@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace BTDebugger
+namespace Origine
 {
     public class NodeEditor : EditorWindow
     {

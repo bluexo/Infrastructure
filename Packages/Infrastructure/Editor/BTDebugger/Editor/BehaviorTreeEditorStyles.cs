@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using BehaviorTreeViewer;
+using Origine;
 using Vector2 = UnityEngine.Vector2;
 using Origine.BT;
 
-namespace BTDebugger
+namespace Origine
 {
     public static class BehaviorTreeEditorStyles
     {

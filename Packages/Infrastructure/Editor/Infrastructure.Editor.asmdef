@@ -1,6 +1,8 @@
 {
     "name": "Infrastructure.Editor",
-    "references": [],
+    "references": [
+        "GUID:e0cfecdf62b9248a6b5795f72676d2b6"
+    ],
     "includePlatforms": [
         "Editor"
     ],

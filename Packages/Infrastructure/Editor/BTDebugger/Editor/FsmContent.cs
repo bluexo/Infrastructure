@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace BTDebugger
+namespace Origine
 {
     public static class FsmContent
     {

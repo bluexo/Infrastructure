@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BTDebugger
+namespace Origine
 {
     public class ZoomableArea
     {

@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BTDebugger
+namespace Origine
 {
     [System.Serializable]
     public class MainToolbar
