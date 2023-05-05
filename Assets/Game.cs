@@ -55,16 +55,7 @@ namespace Wars
             yield return ConfigManager.InitializeAsync($"ConfigFiles");
             yield return UIManager.InitializeAsync($"UIManager.prefab");
             yield return AudioManager.InitializeAsync($"Settings");
-            InitializeInterpreter();
             Initialized = true;
-        }
-
-        private void InitializeInterpreter()
-        {
-            Interpreter.SetValue("GUI", new Func<string, BaseUI>(ui => UIManager.GetOrCreate(AssemblyCollection.GetType(ui))));
-            Interpreter.SetValue("STG", new Action<string>(stage => StageManager.Switch(AssemblyCollection.GetType(stage))));
-            Interpreter.SetValue("PST", new Func<string, PresenterBase>(controller => PresenterManager.Get(controller)));
-            Interpreter.SetValue("CMD", new Action<string, object>((c, o) => EventManager.Publish(CommandEventArgs.EventId, new CommandEventArgs(c, o))));
         }
 
         private void Update() => GameContext.Update(Time.deltaTime);
