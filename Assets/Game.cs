@@ -56,6 +56,7 @@ namespace Wars
             yield return UIManager.InitializeAsync($"UIManager.prefab");
             yield return AudioManager.InitializeAsync($"Settings");
             Initialized = true;
+            StageManager.Start<StartStage>();
         }
 
         private void Update() => GameContext.Update(Time.deltaTime);
